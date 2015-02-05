@@ -1,0 +1,483 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xmlns:context="http://www.springframework.org/schema/context"
+       xmlns:jdbc="http://www.springframework.org/schema/jdbc"
+       xmlns="http://www.springframework.org/schema/beans"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans
+       http://www.springframework.org/schema/beans/spring-beans.xsd
+       http://www.springframework.org/schema/context
+	   http://www.springframework.org/schema/context/spring-context.xsd
+	   http://www.springframework.org/schema/jdbc
+	   http://www.springframework.org/schema/jdbc/spring-jdbc.xsd">
+
+    <!-- Used so the @Autowired annotations will work without a component-scan
+    This is done because setting properties in auto-scanned components is annoying -->
+    <context:annotation-config/>
+
+    <bean id="dataSource" class="org.springframework.jdbc.datasource.DriverManagerDataSource">
+        <property name="driverClassName" value="org.h2.Driver"/>
+        <property name="url" value="jdbc:h2:tcp://localhost/~/database01"/>
+        <property name="username" value="sa"/>
+        <!-- <property name="password" value="pankaj123" /> -->
+    </bean>
+
+    <jdbc:initialize-database data-source="dataSource" enabled="true" ignore-failures="ALL">
+        <!--<jdbc:script location="classpath:delete.sql" execution="INIT"></jdbc:script>-->
+        <jdbc:script location="classpath:create.sql" execution="INIT"></jdbc:script>
+        <!--<jdbc:script location="classpath:insert.sql" execution="INIT"></jdbc:script>-->
+        <!--<jdbc:script location="classpath:delete.sql" execution="DESTROY"></jdbc:script>-->
+    </jdbc:initialize-database>
+
+    <!-- DAOs -->
+    <bean id="personDao" class="dao.impl.PersonDao"/>
+    <bean id="movieDao" class="dao.impl.MovieDao"/>
+    <bean id="subtitleDao" class="dao.impl.SubtitleDao"/>
+    <bean id="ratingDao" class="dao.impl.RatingDao"/>
+
+
+    <!-- Controller -->
+    <bean id="mainGuiController" class="gui.MainGuiController"/>
+    <bean id="addingProgressController" class="gui.AddingProgressController"/>
+    <bean id="addMovieController" class="gui.AddMovieGuiController"/>
+    <bean id="detailMovieGuiController" class="gui.DetailMovieGuiController"/>
+    <bean id="InternalMoviePlayer" class="gui.InternalPlayerController"/>
+    <bean id="sleepGuiController" class="gui.SleepGuiController"/>
+
+    <!-- Service -->
+    <bean id="trailerService" class="service.impl.TrailerServiceImpl"/>
+    <bean id="tmdbService" class="service.impl.TMDBServiceImpl"/>
+    <bean id="movieService" class="service.impl.MovieServiceImpl"/>
+    <bean id="ratingService" class="service.impl.RatingServiceImpl"/>
+    <bean id="tomatoService" class="service.impl.RottenTomatoServiceImpl"/>
+    <bean id="soundService" class="service.audiocontrol.SoundServiceImpl"/>
+    <bean id="voiceService" class="service.audiocontrol.VoiceServiceImpl">
+        <property name="modelDirectory" value="resource:/cmusphinx-5prealpha-en-us-2.0adapt"/>
+        <property name="dictionary" value="resource:/cmudict.0.7a"/>
+        <property name="grammarPath" value="resource:/"/>
+        <property name="grammarName" value="moviewer"/>
+    </bean>
+    <bean id="sleepService" class="service.audiocontrol.SleepServiceImpl"/>
+    <bean id="crawlerService" class="service.impl.CrawlerServiceImpl">
+        <property name="acceptedFileTypes">
+            <list>
+                <value>avi</value>
+                <value>mpeg</value>
+                <value>mpeg1</value>
+                <value>mpeg2</value>
+                <value>mpeg3</value>
+                <value>mpeg4</value>
+                <value>mpg</value>
+                <value>mp2</value>
+                <value>mp3</value>
+                <value>mp4</value>
+                <value>thra</value>
+                <value>ogg</value>
+                <value>ogm</value>
+                <value>wmv</value>
+                <value>divx</value>
+                <value>xvid</value>
+                <value>mov</value>
+                <value>mkv</value>
+                <value>webm</value>
+            </list>
+        </property>
+        <property name="replace" value=" eng | ger | de | en | fr | esp | es | ita | it "/>
+        <property name="replace_groups"
+                  value="10801920|2HD|4F|7SiNS|850105|aAF|aBD|ADHD|AERO|ALLiANCE|AMBiTiOUS|AMIABLE|ANGELiC|ASAP|AVCHD|AVS720|BAJSKORV|BALLS|BARGE|BAWLS|BestHD|BiA|BLOW|BLUEYES|BRICKSQUaD|BRiGHT|BRMP|BWB|c0nFuSed|C4TV|CBGB|CDDHD|CiNEFiLE|CLASSiC|COMPULSiON|CRiMSON|CROSSBOW|D3Si|DAH|DEFiNiTE|DEPRAViTY|DHD|DiFFERENT|DIMENSION|DiVERGE|DRHD|DUPLI|EiTheL|ENCOUNTERS|ETHOS|euHD|EUSTASS|FAIRPLAY|FaNSuB|FCC|Felony|FHD|FilmHD|FKKTV|FoV|FQM|FRIGGHD|FSiHD|FTP|GTVG|H2|haggis|HAiDEAF|HALCYON|HCA|HD1080|HD4U|HDEX|HDX|HiGHTiMES|HILSWALTB|HUBRIS|HV|HYBRiS|iBEX|iGNiTiON|IMMERSE|iMSORNY|iND|iNFAMOUS|iNGOT|iNVANDRAREN|Japhson|JMT|KaKa|KYR|LCHD|LEVERAGE|LMAO|LOL|LOST|MACHD|MACK4|MAGiCAL|MAGiCViBE|MELiTE|MeTH|METiS|MHQ|MiNDTHEGAP|MiSFiTS|MOAB|MOMENTUM|MSE|NERDHD|NGCHD|NODLABS|NOHD|NVA|OEM|OEM1080|OMiCRON|ORENJI|P0W4|PELLUCiD|PFa|PREMiER|PSV|PURE|PUZZLE|QCF|QSP|RAP|REFiNED|REMAX|REWARD|RiVER|RTA|SAiMORNY|SECTOR7|SEMTEX|SEVENTWENTY|SFM|SHDXXX|SHORTBREHD|SIBV|SiNNERS|SiTiN|sPHD|SSF|SUN|SUNSPOT|SWAGGERHD|SYS|TASTETV|TENEIGHTY|TERRA|THENiGHTMAREiNHD|THUGLiNE|TiMELORDS|TiMTY|TiTANS|TLA|TUSAHD|TVP|TWiZTED|URTV|VAMPS|ViD|ViLD|W4F|WASTE|WAVEY|WEST|WHEELS|WiKi|WLM|WPi|XPERT_HD|XSTREEM|YesTV|ZMG|ZZGtv|3LTON|AFG|AHD|ALeSiO|aXXo|BDClub|Blu-bits|BlueBird|BluWave|BRrip|BTT|CHD|CHDBits|CrEwSaDe|CtrlHD|D-Z0N3|de[42]|decibeL|DEViSE|DON|EbP|EiMi|ESiR|EuReKA|FASM|FLAWL3SS(retired)|FoRM|FraMeSToR|FTW-HD|FZHD|GAGE|Gazdi|george.c|Gogeta|GoLDSToNE|HD2DVD|HDBT|HDClub|HDLiTE|HDMaNiAcS|HDME|HDmonSK|HDR|HDxT|HiDt|HiFi|HoodBag|iLL|INtL|KingBen|KiNGS|KLAXXON|LTRG|mHD|mSD|NhaNc3|nHD|nSD|PerfectionHD|PRODJi|RUDOS|SANTi|Shadowman|SiC|Softfeng|TorrenTGui|TRASH|TrollHD|ViPER|ViSiON|WHiiZz|xander|YellowBeast|YoHo|0DAY|3DNORD|3DTV|@Dake AI|@GGZLI|ARiSE|aZA|BDbits|beAst|BluDragon|BluHD|bReAk|CHDTV|Chotab|CiNDY|CM|CMCT|CnSCG|DaNsiM|Dear|DiCE|DiRTY|EPiK|EveRLasT|Flawl3ss|FourGHD|GeewiZ-KiNGDOM|GreatMagician|Grond|HANDJOB|HDBrise|HDC|HDChina|HDCITY|HDEvo|HDRemuX|HDS|HDSPad|HDStar|HDSTaRS|HDSTV|HDViE|HeRMeS|HiDE|HOPE|iCandy|iELLE|iND404|insane|INSPiRAL|iZO|JINs|KHQ|KiNGDOM|Kingdom Release|KiSHD|KRaLiMaRKo|L2Bits|Lamb|LegacyHD|LegacyHD (MobileHD + FourGHD + ReMuXmE)|LEGi0N|LoI|LoNeWolf|LOUiS|MaseraTi|MCCH|Mirror HD 1080p|MoBileHD|MR|muffin(YuNa + YAMiNG)|MySilu|NewArtRiot|NGB|NibuRu|NotoriouS|NoVA|OoKU (Music)|OpenCD|Penumbra|PIS|PrimeHD|PsYcHoPaTh|QOS|RazorX|ReaLHD|REFiLL|Release Lounge|RESiSTANCE|RightSiZE|RiplleyHD|Rx|RyDeR|SadHunter|SecretMyth|SeMa|SKALiWAGZ|SLX|snoopy|sNow|SpaceHD|SWEMUX|SYNERGY|TBB (The Bookhouse Boys)|terribleHD|TRiNiTY|tRuEHD|TTG|UmcHD|VaAr3|Vee(Y2K + RAiNBOW)|ViKAT|ViSTA™(retired)|Voltage|XTSF"/>
+        <property name="replace_mixed"
+                  value="widescreen|multisubs|bluray|hdrip|720p|1080p|hdtv|brrip|dvdrip|dvdscr|x264|xvid|divx| dvd | rip | film | movie |torrentz|torrents|www|http|cam|telesync|workprint|telecine|pay-per-view|screener|ddc|r5|dvd-rip|dvdrip|dvd-r|hdtv|ds rip|vodrip|web dl|webrip|webcam|bdrip| dts |ac3| rip|yify|fxg|jyk|nlx|jaybob|h 264|264|aac|5 1|blitzkrieg|600mb|850mb| Gaz |maxspeed|torentz|torent|usenet|anoxmous"/>
+    </bean>
+    <bean id="subtitleService" class="service.impl.SubtitleServiceImpl">
+        <property name="germanwords">
+            <list>
+                <value>aber</value>
+                <value>alle</value>
+                <value>als</value>
+                <value>andere</value>
+                <value>anstatt</value>
+                <value>ich</value>
+                <value>angenommen</value>
+                <value>auch</value>
+                <value>bist</value>
+                <value>das</value>
+                <value>dasjenige</value>
+                <value>dass</value>
+                <value>dasselbe</value>
+                <value>dein</value>
+                <value>deine</value>
+                <value>dem</value>
+                <value>den</value>
+                <value>denn</value>
+                <value>der</value>
+                <value>deren</value>
+                <value>derjenige</value>
+                <value>derselbe</value>
+                <value>du</value>
+                <value>die</value>
+                <value>dir</value>
+                <value>dich</value>
+                <value>doch</value>
+                <value>ein</value>
+                <value>einander</value>
+                <value>eine</value>
+                <value>einem</value>
+                <value>einen</value>
+                <value>einer</value>
+                <value>eines</value>
+                <value>einige</value>
+                <value>einiges</value>
+                <value>er</value>
+                <value>es</value>
+                <value>etwas</value>
+                <value>euch</value>
+                <value>euer</value>
+                <value>euere</value>
+                <value>falls</value>
+                <value>ist</value>
+                <value>ich</value>
+                <value>ihr</value>
+                <value>ihre</value>
+                <value>ihn</value>
+                <value>ihm</value>
+                <value>je</value>
+                <value>jene</value>
+                <value>jenes</value>
+                <value>jemand</value>
+                <value>keiner</value>
+                <value>nachdem</value>
+                <value>noch</value>
+                <value>mal</value>
+                <value>man</value>
+                <value>manche</value>
+                <value>mehr</value>
+                <value>mehrere</value>
+                <value>mehreren</value>
+                <value>mein</value>
+                <value>meine</value>
+                <value>meineob</value>
+                <value>mich</value>
+                <value>mir</value>
+                <value>mit</value>
+                <value>niemand</value>
+                <value>nicht</value>
+                <value>nichts</value>
+                <value>obwohl</value>
+                <value>oder</value>
+                <value>sei</value>
+                <value>sein</value>
+                <value>seine</value>
+                <value>sich</value>
+                <value>sie</value>
+                <value>sobald</value>
+                <value>sodass</value>
+                <value>sondern</value>
+                <value>sowie</value>
+                <value>sowohl</value>
+                <value>und</value>
+                <value>von</value>
+                <value>warum</value>
+                <value>wann</value>
+                <value>was</value>
+                <value>wen</value>
+                <value>wenn</value>
+                <value>wem</value>
+                <value>wer</value>
+                <value>weil</value>
+                <value>weiter</value>
+                <value>weitere</value>
+                <value>weiterer</value>
+                <value>weiteres</value>
+                <value>wer</value>
+                <value>welches</value>
+                <value>welcher</value>
+                <value>welche</value>
+                <value>weshalb</value>
+                <value>wessen</value>
+                <value>wie</value>
+                <value>wir</value>
+                <value>wobei</value>
+                <value>umso</value>
+                <value>und</value>
+                <value>uns</value>
+                <value>unser</value>
+                <value>unsere</value>
+            </list>
+        </property>
+        <property name="englishwords">
+            <list>
+                <value>above</value>
+                <value>about</value>
+                <value>across</value>
+                <value>all</value>
+                <value>after</value>
+                <value>ago</value>
+                <value>against</value>
+                <value>along</value>
+                <value>although</value>
+                <value>among</value>
+                <value>and</value>
+                <value>any</value>
+                <value>anything</value>
+                <value>are</value>
+                <value>around</value>
+                <value>because</value>
+                <value>before</value>
+                <value>behind</value>
+                <value>below</value>
+                <value>beside</value>
+                <value>between</value>
+                <value>but</value>
+                <value>did</value>
+                <value>does</value>
+                <value>down</value>
+                <value>during</value>
+                <value>each</value>
+                <value>either</value>
+                <value>every</value>
+                <value>even</value>
+                <value>few</value>
+                <value>for</value>
+                <value>from</value>
+                <value>front</value>
+                <value>have</value>
+                <value>has</value>
+                <value>had</value>
+                <value>her</value>
+                <value>hers</value>
+                <value>him</value>
+                <value>his</value>
+                <value>how</value>
+                <value>however</value>
+                <value>inside</value>
+                <value>its</value>
+                <value>lot</value>
+                <value>lots</value>
+                <value>many</value>
+                <value>mine</value>
+                <value>much</value>
+                <value>neither</value>
+                <value>near</value>
+                <value>next</value>
+                <value>not</value>
+                <value>off</value>
+                <value>onto</value>
+                <value>opposite</value>
+                <value>otherwise</value>
+                <value>over</value>
+                <value>past</value>
+                <value>she</value>
+                <value>since</value>
+                <value>some</value>
+                <value>something</value>
+                <value>that</value>
+                <value>the</value>
+                <value>their</value>
+                <value>theirs</value>
+                <value>them</value>
+                <value>there</value>
+                <value>these</value>
+                <value>they</value>
+                <value>those</value>
+                <value>this</value>
+                <value>through</value>
+                <value>till</value>
+                <value>towards</value>
+                <value>under</value>
+                <value>unless</value>
+                <value>until</value>
+                <value>you</value>
+                <value>your</value>
+                <value>yours</value>
+                <value>was</value>
+                <value>were</value>
+                <value>what</value>
+                <value>will</value>
+                <value>with</value>
+                <value>without</value>
+                <value>when</value>
+                <value>whether</value>
+                <value>who</value>
+                <value>whose</value>
+                <value>which</value>
+                <value>within</value>
+                <value>iyou</value>
+                <value>iand</value>
+            </list>
+        </property>
+        <property name="frenchwords">
+            <list>
+                <value>aucun</value>
+                <value>aucune</value>
+                <value>avais</value>
+                <value>avec</value>
+                <value>aux</value>
+                <value>bien</value>
+                <value>bon</value>
+                <value>bonne</value>
+                <value>cause</value>
+                <value>chose</value>
+                <value>ces</value>
+                <value>cet</value>
+                <value>cette</value>
+                <value>celui</value>
+                <value>ceux</value>
+                <value>celle</value>
+                <value>celles</value>
+                <value>des</value>
+                <value>dans</value>
+                <value>elle</value>
+                <value>elles</value>
+                <value>etre</value>
+                <value>eux</value>
+                <value>est</value>
+                <value>faire</value>
+                <value>ils</value>
+                <value>ici</value>
+                <value>jamais</value>
+                <value>les</value>
+                <value>lui</value>
+                <value>leur</value>
+                <value>leurs</value>
+                <value>mieux</value>
+                <value>mais</value>
+                <value>moi</value>
+                <value>mon</value>
+                <value>non</value>
+                <value>nous</value>
+                <value>notre</value>
+                <value>oui</value>
+                <value>pas</value>
+                <value>pour</value>
+                <value>peux</value>
+                <value>plus</value>
+                <value>pourquoi</value>
+                <value>quand</value>
+                <value>personne</value>
+                <value>qui</value>
+                <value>que</value>
+                <value>quelle</value>
+                <value>quelles</value>
+                <value>quelque</value>
+                <value>quoi</value>
+                <value>rien</value>
+                <value>sur</value>
+                <value>suis</value>
+                <value>sien</value>
+                <value>siens</value>
+                <value>siennes</value>
+                <value>tien</value>
+                <value>tiens</value>
+                <value>tiennes</value>
+                <value>tout</value>
+                <value>toute</value>
+                <value>toi</value>
+                <value>ton</value>
+                <value>tre</value>
+                <value>tres</value>
+                <value>une</value>
+                <value>voir</value>
+                <value>vous</value>
+                <value>votre</value>
+                <value>veux</value>
+                <value>itu</value>
+                <value>ije</value>
+                <value>imieux</value>
+                <value>imais</value>
+            </list>
+        </property>
+        <property name="italianwords">
+            <list>
+                <value>ancora</value>
+                <value>avete</value>
+                <value>abbiamo</value>
+                <value>adesso</value>
+                <value>alla</value>
+                <value>alle</value>
+                <value>bene</value>
+                <value>con</value>
+                <value>che</value>
+                <value>cui</value>
+                <value>chi</value>
+                <value>cosa</value>
+                <value>come</value>
+                <value>dove</value>
+                <value>davanti</value>
+                <value>dientro</value>
+                <value>del</value>
+                <value>dell</value>
+                <value>dello</value>
+                <value>della</value>
+                <value>dei</value>
+                <value>del</value>
+                <value>degli</value>
+                <value>delle</value>
+                <value>dico</value>
+                <value>domani</value>
+                <value>essere</value>
+                <value>facio</value>
+                <value>fai</value>
+                <value>facciamo</value>
+                <value>fate</value>
+                <value>fare</value>
+                <value>forse</value>
+                <value>ho</value>
+                <value>gia</value>
+                <value>gli</value>
+                <value>hai</value>
+                <value>hanno</value>
+                <value>ieri</value>
+                <value>lontano</value>
+                <value>lui</value>
+                <value>lei</value>
+                <value>loro</value>
+                <value>male</value>
+                <value>mai</value>
+                <value>mia</value>
+                <value>niente</value>
+                <value>nulla</value>
+                <value>nessuno</value>
+                <value>noi</value>
+                <value>non</value>
+                <value>oggi</value>
+                <value>per</value>
+                <value>presto</value>
+                <value>quale</value>
+                <value>quando</value>
+                <value>quanto</value>
+                <value>quasi</value>
+                <value>questa</value>
+                <value>questi</value>
+                <value>quella</value>
+                <value>quel</value>
+                <value>questo</value>
+                <value>queste</value>
+                <value>quei</value>
+                <value>quello</value>
+                <value>quegli</value>
+                <value>quell</value>
+                <value>quello</value>
+                <value>quelli</value>
+                <value>sei</value>
+                <value>isamo</value>
+                <value>siete</value>
+                <value>sono</value>
+                <value>sopra</value>
+                <value>spesso</value>
+                <value>subito</value>
+                <value>sono</value>
+                <value>sopra</value>
+                <value>sotto</value>
+                <value>tutto</value>
+                <value>vicino</value>
+                <value>tua</value>
+                <value>voi</value>
+                <value>una</value>
+                <value>ino</value>
+                <value>ima</value>
+                <value>ila</value>
+                <value>ile</value>
+                <value>imi</value>
+            </list>
+        </property>
+    </bean>
+</beans>

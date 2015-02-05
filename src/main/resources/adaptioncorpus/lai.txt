@@ -1,0 +1,36 @@
+Play movie.
+Next.
+Previous.
+Next movie.
+Previous movie.
+Movie details.
+Add movie.
+Up.
+Down.
+Yes.
+No.
+Left.
+Right.
+Whistle.
+Clap.
+Exit.
+Movie stop.
+Stop movie.
+Movie play.
+Pause movie.
+Movie pause.
+Favor movie.
+Stop sleep.
+Back.
+Delete movie.
+Movie pause.
+Up, down, left, right.
+Yes, no, yes, no.
+Details.
+Ok.
+Play movie.
+Movie play.
+Movie stop.
+Stop movie.
+Pause movie.
+Movie pause.

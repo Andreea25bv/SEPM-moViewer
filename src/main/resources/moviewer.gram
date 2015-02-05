@@ -1,0 +1,6 @@
+#JSGF V1.0;
+/**
+ * JSGF Grammar for Hello World example
+ */
+grammar moviewer;
+public <command> = ((PLAY | CLEAR | NEXT | PREVIOUS) MOVIE) | (OH MIGHTY COMPUTER) | ( SOUND OFF) | (SOUND ON) | (VOLUME UP) | (VOLUME DOWN) | (SMALL SKIP) | (MIGHTY SKIP) | (SMALL BACKWARDS) | (MIGHTY BACKWARDS);

@@ -1,0 +1,273 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+    <modelVersion>4.0.0</modelVersion>
+
+    <groupId>org.apache.maven</groupId>
+    <artifactId>maven</artifactId>
+    <version>1.0-SNAPSHOT</version>
+
+    <name>tdd-tutorial</name>
+
+    <build>
+        <plugins>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-compiler-plugin</artifactId>
+                <configuration>
+                    <source>1.8</source>
+                    <target>1.8</target>
+                </configuration>
+            </plugin>
+        </plugins>
+        <resources>
+            <resource>
+                <directory>src/main/java/gui</directory>
+                <targetPath>gui</targetPath>
+                <includes>
+                    <include>**/*.fxml</include>
+                </includes>
+            </resource>
+        </resources>
+
+    </build>
+
+
+    <repositories>
+        <repository>
+            <id>snapshots-repo</id>
+            <url>https://oss.sonatype.org/content/repositories/snapshots</url>
+            <releases>
+                <enabled>false</enabled>
+            </releases>
+            <snapshots>
+                <enabled>true</enabled>
+            </snapshots>
+        </repository>
+    </repositories>
+
+    <properties>
+        <!-- dependencies -->
+        <h2.version>1.4.185</h2.version>
+        <log4j.version>2.1</log4j.version>
+        <controlsfx.version>8.20.8</controlsfx.version>
+        <spring.version>4.1.4.RELEASE</spring.version>
+
+        <!-- testing -->
+        <junit.version>4.12</junit.version>
+        <hamcrest.version>1.3</hamcrest.version>
+        <mockito.version>1.10.19</mockito.version>
+        <guava.version>18.0</guava.version>
+
+        <!-- plugin -->
+        <mvn-compiler.version>3.2.5</mvn-compiler.version>
+        <mvn-exec.version>1.3.2</mvn-exec.version>
+
+        <!-- tmdb-api -->
+        <version.jackson>2.3.0</version.jackson>
+        <version.slf4j>1.7.10</version.slf4j>
+
+        <!--SELENIUM WEBDRIVER-->
+        <selenium.version>2.44.0</selenium.version>
+        <httpclient.version>4.3.6</httpclient.version>
+    </properties>
+
+    <dependencies>
+
+        <!-- voice-recognition -->
+        <dependency>
+            <groupId>edu.cmu.sphinx</groupId>
+            <artifactId>sphinx4-core</artifactId>
+            <version>1.0-SNAPSHOT</version>
+        </dependency>
+        <!-- TMDB-api -->
+        <dependency>
+            <groupId>com.omertron</groupId>
+            <artifactId>themoviedbapi</artifactId>
+            <version>3.10</version>
+        </dependency>
+
+        <dependency>
+            <groupId>com.omertron</groupId>
+            <artifactId>rottentomatoesapi</artifactId>
+            <version>1.4</version>
+        </dependency>
+
+        <dependency>
+            <groupId>local</groupId>
+            <artifactId>musicg-1.4.2.0</artifactId>
+            <version>0.1.3</version>
+            <scope>system</scope>
+            <systemPath>${project.basedir}/src/main/resources/musicg-1.4.2.0.jar</systemPath>
+        </dependency>
+
+        <!--<dependency>-->
+        <!--<groupId>org.slf4j</groupId>-->
+        <!--<artifactId>slf4j-api</artifactId>-->
+        <!--<version>1.7.7</version>-->
+        <!--</dependency>-->
+        <!--<dependency>-->
+        <!--<groupId>org.slf4j</groupId>-->
+        <!--<artifactId>slf4j-simple</artifactId>-->
+        <!--<version>1.7.7</version>-->
+        <!--</dependency>-->
+        <!--from live demo-->
+        <dependency>
+            <groupId>com.h2database</groupId>
+            <artifactId>h2</artifactId>
+            <version>${h2.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>org.apache.logging.log4j</groupId>
+            <artifactId>log4j-core</artifactId>
+            <version>${log4j.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>org.apache.logging.log4j</groupId>
+            <artifactId>log4j-api</artifactId>
+            <version>${log4j.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>org.apache.logging.log4j</groupId>
+            <artifactId>log4j-slf4j-impl</artifactId>
+            <version>${log4j.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>com.google.guava</groupId>
+            <artifactId>guava</artifactId>
+            <version>${guava.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>org.controlsfx</groupId>
+            <artifactId>controlsfx</artifactId>
+            <version>${controlsfx.version}</version>
+        </dependency>
+
+        <!-- VLCJ -->
+        <dependency>
+            <groupId>uk.co.caprica</groupId>
+            <artifactId>vlcj</artifactId>
+            <version>3.1.0</version>
+        </dependency>
+
+        <!-- testing -->
+        <dependency>
+            <groupId>junit</groupId>
+            <artifactId>junit</artifactId>
+            <version>${junit.version}</version>
+            <scope>test</scope>
+        </dependency>
+        <dependency>
+            <groupId>org.hamcrest</groupId>
+            <artifactId>hamcrest-all</artifactId>
+            <version>${hamcrest.version}</version>
+            <scope>test</scope>
+        </dependency>
+        <dependency>
+            <groupId>org.mockito</groupId>
+            <artifactId>mockito-all</artifactId>
+            <version>${mockito.version}</version>
+            <scope>test</scope>
+        </dependency>
+
+        <!-- spring -->
+        <dependency>
+            <groupId>org.springframework</groupId>
+            <artifactId>spring-core</artifactId>
+            <version>${spring.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>org.springframework</groupId>
+            <artifactId>spring-beans</artifactId>
+            <version>${spring.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>org.springframework</groupId>
+            <artifactId>spring-context</artifactId>
+            <version>${spring.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>org.springframework</groupId>
+            <artifactId>spring-tx</artifactId>
+            <version>${spring.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>org.springframework</groupId>
+            <artifactId>spring-jdbc</artifactId>
+            <version>${spring.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>org.springframework</groupId>
+            <artifactId>spring-test</artifactId>
+            <version>${spring.version}</version>
+        </dependency>
+
+        <!-- new API -->
+
+        <!--JSON-->
+        <dependency>
+            <groupId>com.fasterxml.jackson.core</groupId>
+            <artifactId>jackson-core</artifactId>
+            <version>${version.jackson}</version>
+        </dependency>
+        <dependency>
+            <groupId>com.fasterxml.jackson.core</groupId>
+            <artifactId>jackson-annotations</artifactId>
+            <version>${version.jackson}</version>
+        </dependency>
+        <dependency>
+            <groupId>com.fasterxml.jackson.core</groupId>
+            <artifactId>jackson-databind</artifactId>
+            <version>${version.jackson}</version>
+        </dependency>
+
+        <!--LOGGING-->
+        <dependency>
+            <groupId>org.slf4j</groupId>
+            <artifactId>slf4j-api</artifactId>
+            <version>${version.slf4j}</version>
+        </dependency>
+
+        <!--COMMON HTTP TOOLS-->
+        <dependency>
+            <groupId>org.yamj</groupId>
+            <artifactId>api-common</artifactId>
+            <version>1.2</version>
+            <scope>compile</scope>
+        </dependency>
+
+        <!--SELENIUM WEBDRIVER-->
+        <dependency>
+            <groupId>org.seleniumhq.selenium</groupId>
+            <artifactId>selenium-java</artifactId>
+            <version>${selenium.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>org.seleniumhq.selenium</groupId>
+            <artifactId>selenium-server</artifactId>
+            <version>${selenium.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>org.seleniumhq.selenium</groupId>
+            <artifactId>selenium-firefox-driver</artifactId>
+            <version>${selenium.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>org.apache.httpcomponents</groupId>
+            <artifactId>httpclient</artifactId>
+            <version>${httpclient.version}</version>
+        </dependency>
+        <!--Subtitle-API-->
+        <dependency>
+            <groupId>org.apache.xmlrpc</groupId>
+            <artifactId>xmlrpc-client</artifactId>
+            <version>3.1.3</version>
+        </dependency>
+        <dependency>
+            <groupId>xml-apis</groupId>
+            <artifactId>xml-apis</artifactId>
+            <version>1.4.01</version>
+        </dependency>
+    </dependencies>
+</project>

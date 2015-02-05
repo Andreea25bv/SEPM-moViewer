@@ -1,0 +1,64 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.*?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.text.*?>
+<?import java.lang.*?>
+<?import javafx.scene.layout.*?>
+
+<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="140.0" prefWidth="500.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="gui.AddingProgressController">
+   <children>
+      <BorderPane layoutX="130.0" prefHeight="200.0" prefWidth="500.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+         <top>
+            <HBox prefHeight="46.0" prefWidth="500.0" BorderPane.alignment="CENTER">
+               <children>
+                  <Label text="Adding Movies">
+                     <HBox.margin>
+                        <Insets left="10.0" top="10.0" />
+                     </HBox.margin>
+                     <font>
+                        <Font size="28.0" />
+                     </font>
+                  </Label>
+               </children>
+            </HBox>
+         </top>
+         <center>
+            <VBox prefHeight="200.0" prefWidth="100.0" BorderPane.alignment="CENTER">
+               <children>
+                  <BorderPane prefHeight="45.0" prefWidth="500.0">
+                     <top>
+                        <Label fx:id="addingLabel" prefHeight="26.0" prefWidth="483.0" text="Adding:" BorderPane.alignment="CENTER" />
+                     </top>
+                     <left>
+                        <Label fx:id="countLabel" prefHeight="15.0" prefWidth="57.0" text="0/0" BorderPane.alignment="CENTER">
+                           <BorderPane.margin>
+                              <Insets left="10.0" />
+                           </BorderPane.margin>
+                        </Label>
+                     </left>
+                     <right>
+                        <ProgressBar fx:id="progressBar" prefHeight="20.0" prefWidth="417.0" progress="0.0" BorderPane.alignment="CENTER">
+                           <BorderPane.margin>
+                              <Insets right="10.0" />
+                           </BorderPane.margin>
+                        </ProgressBar>
+                     </right>
+                  </BorderPane>
+               </children>
+            </VBox>
+         </center>
+         <bottom>
+            <HBox alignment="TOP_RIGHT" prefHeight="30.0" prefWidth="500.0" BorderPane.alignment="CENTER">
+               <children>
+                  <Button fx:id="cancelButton" alignment="CENTER_RIGHT" mnemonicParsing="false" onAction="#handleCancelButton" text="Cancel">
+                     <HBox.margin>
+                        <Insets bottom="10.0" right="10.0" />
+                     </HBox.margin>
+                  </Button>
+               </children>
+            </HBox>
+         </bottom>
+      </BorderPane>
+   </children>
+</AnchorPane>
